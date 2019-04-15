@@ -1,0 +1,56 @@
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<script>
+    function addUser() {
+        alert("add user called");
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var voornaam = document.getElementById("voornaam").value;
+        var achternaam = document.getElementById("achternaam").value;
+        var role = document.getElementById("role").value;
+        if (username && password && role && voornaam && achternaam){
+        	
+        	var user = {
+        			username: username,
+        			voornaam: voornaam,
+        			achternaam: achternaam,
+        			password: password,
+        			role: role	
+        	};
+            var data = JSON.stringify(user);
+            console.log(data);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+               
+                if (this.readyState === 4 && this.status === 200) {
+                    if(JSON.parse(this.responseText).body.username) {
+                        var user = JSON.parse(this.responseText).body;
+                        document.getElementById("result").innerText = user.username + " succescol toegevoegd!"
+                    } else {
+                        document.getElementById("result").innerText = "Gebruiker niet toegevoegd.";
+                    }
+                }
+            };
+            xhttp.open("POST", "http://localhost:8082/api/user/add");
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(data);
+        } else {
+            document.getElementById("header").innerText = "Vul alle velden.";
+        }
+    }
+</script>
+<body>
+	<h2 id="header">Add User</h2>
+	<div id="result"></div>
+	Voornaam:     <input id="voornaam" type='text' name='voornaam'><br/>
+	Achternaam:     <input id="achternaam" type='text' name='achternaam'><br/>
+	User:     <input id="username" type='text' name='username'><br/>
+	Password: <input id="password" type='password' name='password' /> <br/>
+	Rol:     <input id="role" type='text' name='role' /> <br/>
+	<button name="addButton" onclick="addUser()">Gebruiker toevoegen</button>
+	<button name="mainPage" onclick="location.href='/'">Hoofdpagina</button>
+	<hr/>
+</body>
+</html>

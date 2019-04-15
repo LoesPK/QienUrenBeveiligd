@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trainee Declaraties</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body onload="GETTrainee()">
+	<nav>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+				<li><a href="login">uitloggen</a></li>
+				<li><a href="TraineeDeclaraties" class="active">Declaraties</a></li>
+  				<li><a href="dashboardTrainee" >Uren</a></li>
+  				<li><a href="TraineeUrenArchief" >UrenArchief</a></li>
+			</ul>
+		</div>
+    </nav>
+<div class="wrapperK">
+    <div class="container">
+        <h1>Declaraties</h1>
+        <div><button id="addButton" onclick=" addRowKostenTabel()">+</button></div>
+        <h2>OV en Overige Kosten</h2>
+        <div id="kostentabelDiv">
+
+            <table id="kostenTabel" >
+                <thead>
+                    <tr class="KostenHeader">
+                        <th class="tableheader">Status</th>
+                        <th class="tableheader">Datum</th>
+                        <th class="tableheader">Kosten Soort</th>
+                        <th class="tableheader">Bedrag €</th>
+                        <th class="tableheader">KM</th>
+                    </tr>
+                    </thead>
+                </table>
+        </div>
+        <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
+        <button onclick="KostenVerzenden()">Verzenden</button>
+
+        
+    </div>
+</div>
+
+
+<script type="text/javascript" src="traineeDeclaraties.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard Trainee | Uren</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body onload="GETTrainee()">
+	<nav>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+				<li><a href="login" onclick="Userlogout()">uitloggen</a></li>
+				<li><a href="TraineeDeclaraties">Declaraties</a></li>
+				  <li><a href="TraineeUrenoverzicht" class="active">Uren</a></li>
+				  <li><a href="TraineeUrenArchief" >UrenArchief</a></li>
+				  
+			</ul>
+		</div>
+	</nav>
+<div class="wrapperUren">
+	<div class="container">
+		<h1>Urentabel</h1>
+		<div><button id="addButton" onclick=" addRowUrenTabel()">+</button></div>
+		<div id="urentabelDiv">
+
+			<table id="urenTabel" >
+				<thead>
+				<tr class="UrenHeader">
+				<th>Datum</th>
+					<th>Soort</th>
+					<th>Aantal</th>
+					<th>Status</th>
+				</tr>
+				</thead>
+			</table>
+
+
+		</div>
+		<button id="buttonopslaan" type ="submit" value="opslaan" onclick="HourSave()">Opslaan</button>
+		<button id="sendHours" onclick="UrenVerzenden()">Verzenden</button>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="traineeUrenoverzicht.js"></script>
+</body>
+</html>

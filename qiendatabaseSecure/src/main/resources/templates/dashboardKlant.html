@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard klant</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+	<script type="text/javascript" src="KlantHomepage.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body onload="getTrainees()">
+	<nav>
+		<a href="dashboardKlant"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+				<li><a href="login" >Uitloggen</a></li>
+				<li><a href="dashboardKlant" class ="active">Dashboard</a></li>
+				<li><a href="KlantUrenArchief" >UrenArchief</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="wrapperKlant">
+		  <h1>Trainees</h1>
+			<div id="traineelijst"></div>
+			<button onclick="TraineeHourChange()">Versturen naar Qien</button>
+	</div>
+
+	
+</body>
+</html>
