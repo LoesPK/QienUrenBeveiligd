@@ -1,12 +1,15 @@
 package com.mijnqiendatabase.qiendatabase.domain;
-
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Trainee extends User {
@@ -15,13 +18,14 @@ public class Trainee extends User {
 	private int type; // bijv Masterclass of gedetacheerd, ivm reiskostenvergoeding
 	
 	@JsonIgnoreProperties("trainee")
-	@OneToMany (fetch = FetchType.EAGER)
-	private Set<Klant> klant; // een trainee werkt bij 1 of meer klanten
+	@ManyToOne 
+	private Klant klant; // een trainee werkt bij 1 of meer klanten
 	@OneToMany (fetch = FetchType.EAGER) //geen idee of eager fetchen nodig is, anders haal ik het nog wel weg
 	private Set<Uur> uren; // nieuw, een trainee heeft gewerkte uren ipv tijdsformulieren
 
 	@OneToMany (fetch = FetchType.EAGER)
 	private Set<Kosten> kosten; // Jordi
+
 
 	public Set<Kosten> getKosten() {
 		return kosten;
@@ -30,6 +34,7 @@ public class Trainee extends User {
 	public void setKosten(Set<Kosten> kosten) {
 		this.kosten = kosten;
 	}
+
 
 	public int getLoon() {
 		return loon;
@@ -55,11 +60,11 @@ public class Trainee extends User {
 	this.uren = uren;
 	}	
 
-	public Set<Klant> getKlant() {
+	public Klant getKlant() {
 		return klant;
 	}
 
-	public void setKlant(Set<Klant> klant) {
+	public void setKlant(Klant klant) {
 		this.klant = klant;
   }
 }

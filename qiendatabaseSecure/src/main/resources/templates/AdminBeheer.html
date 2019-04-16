@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin | Beheer</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+</head>
+<body onload = setPage()> 
+	<nav>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			
+			<ul>
+				<li><a href="" >Uitloggen</a></li>
+				<li><a href="AdminBeheer" class="active" >Beheer</a></li>
+				<li><a href="AdminKlantenOverzicht" >Klanten</a></li>
+				<li><a href="AdminTraineeOverzicht" >Trainees</a></li>
+				<li><a href="AdminDeclaratiesOverzicht" >Declaraties</a></li>
+				<li><a href="AdminUrenoverzicht" >Uren</a></li>
+				<li><a href="AdminDashboard" >Dashboard</a></li>
+			</ul>
+		</div>
+	</nav>
+
+    <div class="container">
+    	<h1>Account Aanmaken</h1>
+    	<div class="beheer">
+			<div class="traineeAanmaken">
+				
+				<h2>Trainee</h2>
+				<p>Voornaam:</p><input type="text" id="voornaamTrainee"/><br />
+				<p>Achternaam:</p><input type="text" id="achternaamTrainee"/><br />
+				<p>Emailadres:</p><input type="text" id="emailadresTrainee"/><br />
+				<p>Username:</p><input type="text" id="usernameTrainee"/><br />
+				<p>Wachtwoord:</p><input type="text" id="wachtwoordTrainee"/><br />
+				<p>Klant:</p> <select name="klantenOpties" id="klantTrainee"></select>
+				
+				<br>
+				<button onclick="UserVersturen('trainee')">Maak Trainee aan</button>
+					
+			</div>
+
+			<div class="klantAanmaken">
+				<h2>Klant</h2>
+				<p> Voornaam:</p><input type="text" id="voornaamKlant"/><br/>
+				<p>Achternaam:</p><input type="text" id="achternaamKlant"/><br />
+				<p>Bedrijf:</p><input type="text" id="bedrijfKlant"/><br />
+				<p>Emailadres:</p><input type="text" id="emailadresKlant"/><br />
+				<p>Username:</p><input type="text" id="usernameKlant"/><br />
+				<p>Wachtwoord:</p><input type="text" id="wachtwoordKlant"/><br />
+				<button onclick="UserVersturen('klant')">Maak Klant aan</button>
+			</div>
+		</div>
+    </div>
+
+
+
+
+
+<script type="text/javascript" src="AdminTraineeAanmaken.js"></script>
+</body>
+</html>>
