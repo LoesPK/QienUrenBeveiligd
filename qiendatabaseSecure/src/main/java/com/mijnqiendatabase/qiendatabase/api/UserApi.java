@@ -1,8 +1,13 @@
 package com.mijnqiendatabase.qiendatabase.api;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,15 +46,35 @@ public class UserApi {
 	@GET
 	@Path("/{username}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseEntity getUserByUsername(@PathParam("username") @NotBlank String username) {
-		return ResponseEntity.ok(userService.isUserExists(username));
+	public User getUserByUsername(@PathParam("username") @NotBlank String username) {
+		User user = userService.getUserByUsername(username);
+		return user;
 	}
+	
+	@PUT
+	@Path("{id}/password")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResponseEntity changePassword( @RequestBody @Valid User user) {
+		System.out.println("check in password");
+		User target = userService.getUserByUsername(user.getUsername());
+		System.out.println(target.getPassword());
+		System.out.println(target.getPassword());
+		
+		return ResponseEntity.ok(userService.updateUser(target, user.getPassword()));
+	}
+	
+	
+	
+	
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseEntity addUser( @RequestBody @Valid User user) {
 		System.out.println("check in add");
+		//user check of al bestaat
+		
 		User target = null;
 		if("trainee".equals(user.getRole())) {
 			target = new Trainee();

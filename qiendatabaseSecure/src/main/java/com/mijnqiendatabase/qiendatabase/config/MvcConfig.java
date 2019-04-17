@@ -29,7 +29,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/KlantUrenArchief").setViewName("KlantUrenArchief");
 	
 
-		registry.addViewController("/forgotPassword").setViewName("forgotPassword");
+		registry.addViewController("/WachtwoordVergeten").setViewName("WachtwoordVergeten");
 	}
 	
 }

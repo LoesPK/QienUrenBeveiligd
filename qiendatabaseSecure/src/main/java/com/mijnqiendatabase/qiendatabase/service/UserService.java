@@ -53,6 +53,13 @@ public class UserService {
             return savedUser;
         }
     }
+    
+    public User updateUser(User user, String newPassword) {
+    	user.setPassword(encoder.encode(user.getPassword()));
+    	this.userRepository.save(user);
+    	
+    	return user;
+    }
 
     public String deleteUser(String username) {
         if (isUserExists(username)) {
@@ -71,6 +78,7 @@ public class UserService {
     public void initUsers() {
         System.out.println("<----- User Initialization Started ----->");
         for (User u : getAllUsers()) {
+        	System.out.println(u.getPassword());
             securityController.add(u.getUsername(), u.getPassword(), u.getRole());
         }
         System.out.println("<----- User Initialization Finished ----->");

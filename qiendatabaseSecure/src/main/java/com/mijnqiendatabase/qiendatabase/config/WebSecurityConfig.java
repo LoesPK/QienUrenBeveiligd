@@ -23,16 +23,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 	
-	@Bean
-	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-	    final Properties users = new Properties();
-	    users.put("admin",encoder().encode("password") + ",ROLE_ADMIN,enabled"); //adding for default jedimaster account
-	    return new InMemoryUserDetailsManager(users);
-	}
+//	@Bean
+//	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
+//	    final Properties users = new Properties();
+//	    users.put("admin",encoder().encode("password") + ",ROLE_ADMIN,enabled"); //adding for default jedimaster account
+//	    return new InMemoryUserDetailsManager(users);
+//	}
 	
-//	  @Bean public InMemoryUserDetailsManager inMemoryUserDetailsManager() { return
-//	  new InMemoryUserDetailsManager(new Properties()); }
-//	 
+	  @Bean public InMemoryUserDetailsManager inMemoryUserDetailsManager() { return
+	  new InMemoryUserDetailsManager(new Properties()); }
+	 
+	
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
 	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -49,9 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 	    http.csrf().disable()
 	        .authorizeRequests()
-	            .antMatchers("/", "/AdminBeheer", "/api/user/add", "/user/updatePassword*",
-	                     "/user/savePassword*",
-	                     "/updatePassword*").permitAll()
+	            .antMatchers("/", "/register", "/api/user/add"
+	                    ).permitAll()
 	            .anyRequest().authenticated()
 	        .and()
 	        .formLogin().permitAll()

@@ -41,6 +41,7 @@ public class UurApi {
 	
 	@GET // Retrieve/Read
   	public Response apiGetAll() {
+		System.out.println("tralala");
          	return Response.ok(uurService.findAll()).build();
   	}
 	
@@ -68,6 +69,7 @@ public class UurApi {
   	@PUT // Update akkoord
   	@Path("{id}/akkoordstatus")
   	public Response apiUpdateAkkoord(@PathParam("id") long id, Uur uur) {
+  		System.out.println("lalalalalala");
          	if (uur == null || uur.getId() != id)
                	return Response.status(Response.Status.BAD_REQUEST).build();
  
