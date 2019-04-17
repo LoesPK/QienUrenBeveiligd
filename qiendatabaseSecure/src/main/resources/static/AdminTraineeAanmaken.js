@@ -135,7 +135,7 @@ function klantFields(){
         klant.achternaam = achternaam;
         klant.emailadres = emailadres;
         klant.username = username; 
-        klant.password = wachtwoord;
+        klant.password = password;
         klant.bedrijf = bedrijf;
         klant.role = "klant" 
         return klant;
