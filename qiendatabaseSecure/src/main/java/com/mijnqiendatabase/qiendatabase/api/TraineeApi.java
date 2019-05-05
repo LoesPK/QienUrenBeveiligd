@@ -81,54 +81,49 @@ public class TraineeApi {
          	return Response.ok(traineeService.findAll()).build();
   	}
  
-  	@PUT // Update
+	@PUT // Update
   	@Path("{id}")
   	public Response apiUpdate(@PathParam("id") long id, Trainee trainee) {
-  		System.out.println("hoi");
-  		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentPrincipalName = authentication.getName();
-		
-		// find user by currentPrincipalName
-		
-		Trainee traineex = (Trainee)this.userService.getUserByUsername(currentPrincipalName);
-		
+  		
   			// BAD REQUEST
-		if (trainee == null || trainee.getId() != traineex.getId()) {
+  			System.out.println("in trainee Uren " + trainee.getId());
+         	if (trainee == null || trainee.getId() != id) {
                	System.out.println("bad request?");
          		return Response.status(Response.Status.BAD_REQUEST).build();
          	}
-         	Optional<Trainee> oldTrainee = traineeService.findById(trainee.getId());
+         	Optional<Trainee> optionalOldTrainee = traineeService.findById(id);
          	
          	// NOT FOUND
-         	if (!oldTrainee.isPresent()) {
+         	if (!optionalOldTrainee.isPresent()) {
          		System.out.println("not found?");
                	return Response.status(Response.Status.NOT_FOUND).build();
          	}
+			Trainee target = optionalOldTrainee.get();
          	// 
-         	Set<Uur> nieuweuren = new HashSet();
+
          	for(Uur uur : trainee.getUren()) {
-         		System.out.println(trainee.getUren());
-         		nieuweuren.add(uurService.save(uur));
-         		System.out.println(uur.getFactuurDatum());
+         		uur.setTrainee(target);
+         		uurService.save(uur);
+         		target.addUur(uur);
          	}
-         	Set<Kosten> nieuwekosten = new HashSet();
-         	for(Kosten kosten : trainee.getKosten()) {
-         		System.out.println(trainee.getKosten());
-         		nieuwekosten.add(kostenService.save(kosten));
-         		System.out.println(kosten.getFactuurDatum());
-         	}
-         	
-         	trainee.setKosten(nieuwekosten);
-         	trainee.setUren(nieuweuren);
-         	Trainee target = oldTrainee.get();
+
          	target.setUren(trainee.getUren());
-         	target.setKosten(trainee.getKosten());
          	System.out.println(target.getUren());
+         	
+         	// Jordi: basically copy paste, maar met kosten ipv uren
+         	Set<Kosten> nieuwekosten = new HashSet();
+         	for(Kosten k : trainee.getKosten()) {
+         		System.out.println("trainee.getKosten():" + trainee.getKosten());
+         		nieuwekosten.add(kostenService.save(k));
+         		System.out.println("k.getFactuurDatum()" + k.getFactuurDatum());
+         	}
+         	trainee.setKosten(nieuwekosten);
+         	target.setKosten(trainee.getKosten());
+         	System.out.println(target.getKosten());
 
          	return Response.ok(traineeService.save(target)).build();
-     
   	}
- 
+  	
 
   	
   	@DELETE // Delete
