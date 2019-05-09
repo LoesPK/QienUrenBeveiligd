@@ -22,6 +22,8 @@ var api = "http://localhost:8082/api/user"
 	                    user = JSON.parse(this.responseText);
 	                    console.log("Check in getUser");
 	                    console.log(user);
+	                    // change the password now (can be refactored later)
+	                   user.password = document.getElementById("password").value;
 	                    PUTWachtwoord(user);
 	            }//end 1e if
 	        }//end http function;
