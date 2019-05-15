@@ -55,7 +55,7 @@ public class UserService {
     }
     
     public User updateUser(User user, String newPassword) {
-    	user.setPassword(encoder.encode(user.getPassword()));
+    	user.setPassword(encoder.encode(newPassword));
     	this.userRepository.save(user);
     	
     	return user;

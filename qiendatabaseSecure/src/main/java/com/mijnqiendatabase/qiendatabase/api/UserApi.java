@@ -60,6 +60,7 @@ public class UserApi {
 		User target = userService.getUserByUsername(user.getUsername());
 		System.out.println(target.getPassword());
 		System.out.println(target.getPassword());
+		System.out.println(">"+user.getPassword()+"<");
 		
 		return ResponseEntity.ok(userService.updateUser(target, user.getPassword()));
 	}
@@ -77,12 +78,17 @@ public class UserApi {
 		
 		User target = null;
 		if("trainee".equals(user.getRole())) {
+			System.out.println("trainee");
 			target = new Trainee();
 			target.setAchternaam(user.getAchternaam());
 			target.setPassword(user.getPassword());
 			target.setUsername(user.getUsername());
 			target.setVoornaam(user.getVoornaam());
+			target.setEmailadres(user.getEmailadres());
 			target.setRole(user.getRole());
+//			if(target instanceof Trainee) {
+//				((Trainee) target).setKlant(((Trainee) user).getKlant());
+//			}
 			
 			
 		}
@@ -93,16 +99,23 @@ public class UserApi {
 				target.setPassword(user.getPassword());
 				target.setUsername(user.getUsername());
 				target.setVoornaam(user.getVoornaam());
+				target.setEmailadres(user.getEmailadres());
 				target.setRole(user.getRole());
 			}
 			else {
 				if("klant".equals(user.getRole())) {
+					System.out.println("klant");
 					target = new Klant();
 					target.setAchternaam(user.getAchternaam());
 					target.setPassword(user.getPassword());
 					target.setUsername(user.getUsername());
+					target.setEmailadres(user.getEmailadres());
 					target.setVoornaam(user.getVoornaam());
 					target.setRole(user.getRole());
+//					if(target instanceof Klant) {
+//						((Klant) target).setTrainee(((Klant) user).getTrainee());
+//						((Klant) target).setBedrijf(((Klant) user).getBedrijf());
+//					}
 				}
 			}
 		}

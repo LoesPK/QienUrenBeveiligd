@@ -1,6 +1,3 @@
-/**
- * 
- */
 //Loes: een paar variabelen 
 var IDCell = 1;
 var selectID = 0;
@@ -9,6 +6,7 @@ var aantalID = 0;
 //Loes: de twee api's
 var apiHour = "http://localhost:8082/api/uur/";
 var apiUserId = "http://localhost:8082/api/trainee/";
+
 //trainee variabele 
 var trainee;
 var statusAkkoord;
@@ -34,28 +32,42 @@ function traineeDropDownMenu(selectID){
 	}
 }
 
+// GET trainee
 function GETTrainee(){
-	theMonth = mm;
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
 				trainee = JSON.parse(this.responseText);	
 				trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
 				for(var i = 0; i<trainee.uren.length; i++){
-
-//					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
-//
-//					if(uurInDBHemZeMonth <= theMonth && uurInDBHemZeMonth >= (theMonth-1) ) 
-
-					GETRowUrenTabel(trainee.uren[i]);
 					
-				}
-      }
-    };
-      xhttp.open("GET", apiUserId+"current/", true);
+					//De dag, maand en jaar van het uur apart in een variabele
+					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
+					var uurInDBHemZeDay = trainee.uren[i].factuurDatum.substring(8,10);
+					var uurInDBHemZeYear = trainee.uren[i].factuurDatum.substring(0,4);
+					
+					//Check op status vd uren zodat alleen de uren die niet ingevuld of teaccorderen zijn worden weergegeven
+					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN") { 
+						GETRowUrenTabel(trainee.uren[i]);
+						
+						//voorwaarden wanneer een uur toegestaan is: anders wordt het uur roodgekleurd en moet de trainee deze (zelf) verwijderen
+						if(uurInDBHemZeDay <= dd && uurInDBHemZeMonth == mm && uurInDBHemZeYear == yyyy ||
+								uurInDBHemZeMonth == (mm-1) && uurInDBHemZeYear == yyyy || 
+									mm == 1 && uurInDBHemZeMonth == 12 && uurInDBHemZeYear == (yyyy-1)){
+//						console.log("Voorwaarde werkt!")
+								}else{
+							var id = trainee.uren[i].id;
+							document.getElementById(id).style.background = "red";
+//						console.log("Datum: " + dd)
+						}//end ifelse
+				}//end 2e if 		
+			}//end for
+		}//end 1e if
+	}//end http function;
+      xhttp.open("GET", apiUserId+"current", true);
 	    xhttp.setRequestHeader("Content-type", "application/json");
 	    xhttp.send();	
-}
+}//end GETTrainee
 
 function UrenVerzenden(){
 	var table = document.getElementById("urenTabel");
@@ -77,7 +89,6 @@ function akkoordUur(uur, i) {
        if (this.readyState == 4) {
            if (this.status == 200) {
            	document.location.reload(true);
-           	console.log(uur.accordStatus);
            } else {
                alert(this.statusText)
            }
@@ -188,6 +199,7 @@ function GETRowUrenTabel(uur){
 	insertedCell1.appendChild(SoortUur);
 	}
 	}
+	
 	//aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);
 	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
@@ -212,7 +224,6 @@ function GETRowUrenTabel(uur){
 	insertedCell2.appendChild(VerwijderKnop);
 	}
 	var insertedCell3 = insertedRow.insertCell(3);
-	console.log(uur.accordStatus);
 	if(uur.accordStatus == "NIETINGEVULD"){
 		statusAkkoord = "Opgeslagen";
 	}if(uur.accordStatus == "TEACCODEREN"){
