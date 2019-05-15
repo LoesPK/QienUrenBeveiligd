@@ -55,8 +55,15 @@ public class UserService {
     }
     
     public User updateUser(User user, String newPassword) {
-    	user.setPassword(encoder.encode(newPassword));
-    	this.userRepository.save(user);
+
+        final String encodedPassword = encoder.encode(newPassword);
+
+		//save it!!!
+        user.setPassword(encodedPassword);
+        this.userRepository.save(user);
+
+        // update the inMemoryUserManager
+        this.securityController.updatePassword(user.getPassword(), encodedPassword);
     	
     	return user;
     }
