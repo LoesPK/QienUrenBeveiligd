@@ -60,8 +60,7 @@ public class UserApi {
 		User target = userService.getUserByUsername(user.getUsername());
 		System.out.println(target.getPassword());
 		System.out.println(target.getPassword());
-		System.out.println(">"+user.getPassword()+"<");
-		
+
 		return ResponseEntity.ok(userService.updateUser(target, user.getPassword()));
 	}
 	

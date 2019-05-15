@@ -28,6 +28,10 @@ public class SimpleSecurityController {
 	    System.out.println("Add user is working for - " + username + "- password : " + password);
 	}
 
+	public void updatePassword(String oldPassword, String newPasswordEncoded) {
+		this.inMemoryUserDetailsManager.changePassword(oldPassword, newPasswordEncoded);
+	}
+
 	public void remove(String username) {
 	    inMemoryUserDetailsManager
 	            .deleteUser(username);
