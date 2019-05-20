@@ -13,8 +13,4 @@ public class QiendatabaseApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(QiendatabaseApplication.class, args);
 	}
-	@Bean
-    CommandLineRunner init(UserService userService) {
-        return (args) -> userService.initUsers();
-    }
 }
