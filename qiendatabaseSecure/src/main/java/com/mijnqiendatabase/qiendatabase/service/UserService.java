@@ -1,28 +1,29 @@
 package com.mijnqiendatabase.qiendatabase.service;
 
+import com.mijnqiendatabase.qiendatabase.domain.User;
+import com.mijnqiendatabase.qiendatabase.exception.UserNotFoundException;
+import com.mijnqiendatabase.qiendatabase.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mijnqiendatabase.qiendatabase.config.SimpleSecurityController;
-import com.mijnqiendatabase.qiendatabase.domain.User;
-import com.mijnqiendatabase.qiendatabase.exception.UserNotFoundException;
-import com.mijnqiendatabase.qiendatabase.repository.UserRepository;
+import java.util.ArrayList;
 
 
 @Controller
 @Transactional
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final SimpleSecurityController securityController;
     private final PasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, SimpleSecurityController securityController, PasswordEncoder encoder) {
+    public UserService(UserRepository userRepository,  PasswordEncoder encoder) {
         this.userRepository = userRepository;
-        this.securityController = securityController;
         this.encoder = encoder;
     }
 
@@ -46,10 +47,7 @@ public class UserService {
         } catch (UserNotFoundException e) {
         	user.setPassword(encoder.encode(user.getPassword()));
             User savedUser = userRepository.save(user);
-            if (savedUser != null) {
-                //Adding user to simpleSecurityController to let the user to be able to use his/her account
-                securityController.add(savedUser.getUsername(), savedUser.getPassword(), savedUser.getRole());
-            }
+
             return savedUser;
         }
     }
@@ -62,9 +60,7 @@ public class UserService {
         user.setPassword(encodedPassword);
         this.userRepository.save(user);
 
-        // update the inMemoryUserManager
-        this.securityController.updatePassword(user.getPassword(), encodedPassword);
-    	
+
     	return user;
     }
 
@@ -74,25 +70,23 @@ public class UserService {
                     userRepository
                             .findByUsername(username)
                             .getId());
-            securityController.remove(username);
             return "User deleted [username: " + username + "]";
         } else {
             return "Delete user request can not proceed because of non existing user [username: " + username + "]";
         }
     }
 
-    //Init user is for adding all the users on the database to simpleSecurityController when application restarts
-    public void initUsers() {
-        System.out.println("<----- User Initialization Started ----->");
-        for (User u : getAllUsers()) {
-        	System.out.println(u.getPassword());
-            securityController.add(u.getUsername(), u.getPassword(), u.getRole());
-        }
-        System.out.println("<----- User Initialization Finished ----->");
-    }
-
     public boolean isUserExists(String username) {
-        return securityController.userExists(username);
+        return this.userRepository.findByUsername(username) != null;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = this.userRepository.findByUsername(username);
+
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
+
+        return userDetails;
+    }
 }
