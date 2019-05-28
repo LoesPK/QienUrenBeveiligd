@@ -1,7 +1,7 @@
 package com.mijnqiendatabase.qiendatabase.config;
 
-import java.util.Properties;
-
+import com.mijnqiendatabase.qiendatabase.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,43 +10,36 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-	
-//	@Bean
-//	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-//	    final Properties users = new Properties();
-//	    users.put("admin",encoder().encode("password") + ",ROLE_ADMIN,enabled"); //adding for default jedimaster account
-//	    return new InMemoryUserDetailsManager(users);
-//	}
-	
-	  @Bean public InMemoryUserDetailsManager inMemoryUserDetailsManager() { return
-	  new InMemoryUserDetailsManager(new Properties()); }
-	 
-	
+
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
-	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-	    authProvider.setUserDetailsService(inMemoryUserDetailsManager());
-	    authProvider.setPasswordEncoder(encoder());
-//	    authProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-	    return authProvider;
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(this.userService);
+		authProvider.setPasswordEncoder(this.passwordEncoder);
+
+		return authProvider;
 	}
-	
+
+	@Autowired
+	private DaoAuthenticationProvider authenticationProvider;
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-	    auth.userDetailsService(inMemoryUserDetailsManager());
+	   auth.authenticationProvider(this.authenticationProvider);
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
